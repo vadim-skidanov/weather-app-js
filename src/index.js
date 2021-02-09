@@ -1,1 +1,1 @@
-console.log("hello world");
+import fetchData from "./js/fetchData/fecthData";
