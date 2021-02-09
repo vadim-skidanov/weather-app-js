@@ -1,0 +1,46 @@
+.row {
+  background: #bbf1fa;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  min-height: 5rem;
+}
+.weather {
+  display: flex;
+  justify-content: space-between;
+
+  &__data {
+    text-transform: uppercase;
+    &-temp {
+      font-size: 5rem;
+      font-weight: 600;
+      color: #663f3f;
+    }
+
+    &-clouds {
+      color: red;
+    }
+  }
+
+  &__logo {
+    align-self: center;
+    &-content {
+      color: red;
+      font-size: 3rem;
+    }
+  }
+
+  &__date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5rem;
+    &-date {
+      color: #000;
+      font-size: 2.5rem;
+      color: #663f3f;
+      font-weight: 600;
+    }
+  }
+}

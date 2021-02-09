@@ -1,0 +1,44 @@
+.search {
+  ::-webkit-search-cancel-button {
+    display: none;
+  }
+  &__input {
+    width: 9rem;
+    height: 2.5rem;
+    border-radius: 5rem;
+    border: 0;
+    background-color: #f4f2f2;
+    padding-right: 1.8rem;
+    margin-right: 0.4rem;
+    font-size: 1.5rem;
+    position: relative;
+    transition: all 0.2s;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      width: 21rem;
+      background: #f0eeee;
+      text-align: center;
+    }
+  }
+
+  ::placeholder {
+    color: #ccc;
+    padding-left: 1rem;
+  }
+
+  &__submit {
+    font-size: 1.6rem;
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 1.8rem;
+    color: #663f3f;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+}
