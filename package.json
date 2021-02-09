@@ -1,0 +1,26 @@
+{
+  "name": "weather-app-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel ./src/index.html --open",
+    "build": "parcel build ./src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vadim-skidanov/weather-app-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vadim-skidanov/weather-app-js/issues"
+  },
+  "homepage": "https://github.com/vadim-skidanov/weather-app-js#readme",
+  "devDependencies": {
+    "node-sass": "^5.0.0",
+    "parcel-bundler": "^1.12.4"
+  }
+}
