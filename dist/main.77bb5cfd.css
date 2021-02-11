@@ -27,6 +27,7 @@ body {
   border-radius: 5rem;
   border: 0;
   background-color: #f4f2f2;
+  padding-left: 1rem;
   padding-right: 1.8rem;
   margin-right: 0.4rem;
   font-size: 1.5rem;
@@ -70,24 +71,26 @@ body {
       font-size: 5rem;
       font-weight: 600;
       color: #663f3f; }
-    .weather__data-clouds {
+    .weather__data-description {
       color: red; }
-  .weather__logo {
-    align-self: center; }
-    .weather__logo-content {
-      color: red;
-      font-size: 3rem; }
+  .weather__icon-content {
+    width: 10rem; }
   .weather__date {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     text-align: center;
-    font-size: 1.5rem; }
+    font-size: 1.5rem;
+    margin: 1rem 0; }
+    .weather__date-month {
+      text-transform: capitalize; }
     .weather__date-date {
       color: #000;
       font-size: 2.5rem;
       color: #663f3f;
       font-weight: 600; }
+    .weather__date-weekday {
+      text-transform: capitalize; }
 
 .header {
   display: flex;

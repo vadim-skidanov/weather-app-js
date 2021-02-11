@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"apiConfig/apiConfig.js":[function(require,module,exports) {
+})({"js/apiConfig/apiConfig.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -132,7 +132,7 @@ const ApiConfig = {
 };
 var _default = ApiConfig;
 exports.default = _default;
-},{}],"js/fetchData/fecthData.js":[function(require,module,exports) {
+},{}],"js/utils/debounce.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -140,32 +140,139 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _apiConfig = _interopRequireDefault(require("../../apiConfig/apiConfig"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const fetchData = async () => {
-  const {
-    api,
-    q,
-    key,
-    units
-  } = _apiConfig.default;
-  const res = await fetch(`${api}?q=${q}&units=${units}&appid=${key}`);
-  const data = await res.json();
-  return data;
+const debounce = (func, delay = 1000) => {
+  let timeoutId;
+  return (...args) => {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(null, args);
+    }, delay);
+  };
 };
 
-fetchData();
-var _default = fetchData;
+var _default = debounce;
 exports.default = _default;
-},{"../../apiConfig/apiConfig":"apiConfig/apiConfig.js"}],"index.js":[function(require,module,exports) {
+},{}],"js/date/date.js":[function(require,module,exports) {
 "use strict";
 
-var _fecthData = _interopRequireDefault(require("./js/fetchData/fecthData"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+// export { currentDate };
+const d = new Date();
+const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+const date = {
+  month: months[d.getMonth()],
+  date: d.getDate(),
+  day: daysOfWeek[d.getDay()]
+};
+var _default = date;
+exports.default = _default;
+},{}],"js/components/searchResult.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.displayData = void 0;
+
+var _date = _interopRequireDefault(require("../date/date"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./js/fetchData/fecthData":"js/fetchData/fecthData.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+const displayData = async cityForecastData => {
+  if (cityForecastData === null) return;
+  const tempParent = document.querySelector(".weather__data");
+  const iconParent = document.querySelector(".weather__icon");
+  const dateParent = document.querySelector(".weather__date");
+  const {
+    month,
+    date,
+    day
+  } = _date.default;
+  const temp = Math.round(cityForecastData.main.temp);
+  const weatherDescription = cityForecastData.weather[0].description;
+  const city = cityForecastData.name;
+  const country = cityForecastData.sys.country;
+  const icon = `http://openweathermap.org/img/w/${cityForecastData.weather[0].icon}.png`;
+  tempParent.innerHTML = `
+    <div class="weather__data-temp">${temp}&deg;</div>
+    <div class="weather__data-description">${weatherDescription}</div>
+    <div class="weather__data-location">${city}, ${country}</div>
+  `;
+  iconParent.innerHTML = `<img src="${icon}" alt="" class="weather__icon-content"></img>`;
+  dateParent.innerHTML = `
+    <div class="weather__date-month">${month}</div>
+    <div class="weather__date-date">${date}</div>
+    <div class="weather__date-weekday">${day}</div>
+    `;
+};
+
+exports.displayData = displayData;
+},{"../date/date":"js/date/date.js"}],"js/bodyRow/bodyRow.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _apiConfig = _interopRequireDefault(require("../apiConfig/apiConfig"));
+
+var _debounce = _interopRequireDefault(require("../utils/debounce"));
+
+var _searchResult = require("./../components/searchResult");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const bodyRow = () => {
+  const searchBar = () => {
+    const searchInput = document.querySelector(".search__input");
+
+    const onInput = async e => {
+      const searchResult = await fetchData(e.target.value);
+      (0, _searchResult.displayData)(searchResult);
+    };
+
+    searchInput.addEventListener("input", (0, _debounce.default)(onInput, 500));
+  };
+
+  const fetchData = async query => {
+    const {
+      api,
+      key,
+      units
+    } = _apiConfig.default;
+
+    try {
+      const res = await fetch(`${api}?q=${query}&units=${units}&appid=${key}`);
+
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+
+      throw Error("City not found");
+    } catch (e) {
+      return null;
+    }
+  };
+
+  searchBar();
+};
+
+bodyRow();
+var _default = bodyRow;
+exports.default = _default;
+},{"../apiConfig/apiConfig":"js/apiConfig/apiConfig.js","../utils/debounce":"js/utils/debounce.js","./../components/searchResult":"js/components/searchResult.js"}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _bodyRow = _interopRequireDefault(require("./js/bodyRow/bodyRow"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./js/bodyRow/bodyRow":"js/bodyRow/bodyRow.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -193,7 +300,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60458" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50208" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

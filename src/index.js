@@ -1,1 +1,1 @@
-import fetchData from "./js/fetchData/fecthData";
+import bodyRow from "./js/bodyRow/bodyRow";
