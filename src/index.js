@@ -1,1 +1,1 @@
-import bodyRow from "./js/bodyRow/bodyRow";
+import searchBar from "./js/searchBar/searchBar";

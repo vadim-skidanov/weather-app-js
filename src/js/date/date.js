@@ -1,5 +1,3 @@
-// export { currentDate };
-
 const d = new Date();
 
 const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];

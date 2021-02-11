@@ -127,12 +127,45 @@ exports.default = void 0;
 const ApiConfig = {
   api: "https://api.openweathermap.org/data/2.5/weather",
   key: "6d437af60d95ce61bbf6059e8904d4d8",
-  q: "London",
   units: "metric"
 };
 var _default = ApiConfig;
 exports.default = _default;
-},{}],"js/utils/debounce.js":[function(require,module,exports) {
+},{}],"js/apiFetchData/apiFetchData.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchData = void 0;
+
+var _apiConfig = _interopRequireDefault(require("../apiConfig/apiConfig"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const fetchData = async query => {
+  const {
+    api,
+    key,
+    units
+  } = _apiConfig.default;
+
+  try {
+    const res = await fetch(`${api}?q=${query}&units=${units}&appid=${key}`);
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+
+    throw Error("City not found");
+  } catch (e) {
+    return null;
+  }
+};
+
+exports.fetchData = fetchData;
+},{"../apiConfig/apiConfig":"js/apiConfig/apiConfig.js"}],"js/utils/debounce.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -159,7 +192,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-// export { currentDate };
 const d = new Date();
 const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
@@ -183,10 +215,15 @@ var _date = _interopRequireDefault(require("../date/date"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const displayData = async cityForecastData => {
-  if (cityForecastData === null) return;
-  const tempParent = document.querySelector(".weather__data");
-  const iconParent = document.querySelector(".weather__icon");
-  const dateParent = document.querySelector(".weather__date");
+  const tempParent = document.querySelector(".content");
+
+  if (cityForecastData === null) {
+    tempParent.innerHTML = `
+      <div class="nothing">Search for a city</div>
+    `;
+    return;
+  }
+
   const {
     month,
     date,
@@ -198,20 +235,48 @@ const displayData = async cityForecastData => {
   const country = cityForecastData.sys.country;
   const icon = `http://openweathermap.org/img/w/${cityForecastData.weather[0].icon}.png`;
   tempParent.innerHTML = `
-    <div class="weather__data-temp">${temp}&deg;</div>
-    <div class="weather__data-description">${weatherDescription}</div>
-    <div class="weather__data-location">${city}, ${country}</div>
+  <div class="row">
+    <div class="weather">
+      <div class="weather__data">
+        <div class="weather__data-temp">${temp}&deg;</div>
+        <div class="weather__data-description">${weatherDescription}</div>
+        <div class="weather__data-location">${city}, ${country}</div>
+      </div>
+      <div class="weather__icon">
+        <img src="${icon}" alt="" class="weather__icon-content"></img>
+      </div>
+      <div class="weather__date">
+        <div class="weather__date-month">${month}</div>
+        <div class="weather__date-date">${date}</div>
+        <div class="weather__date-weekday">${day}</div>
+      </div>
+    </div>
+  </div>
   `;
-  iconParent.innerHTML = `<img src="${icon}" alt="" class="weather__icon-content"></img>`;
-  dateParent.innerHTML = `
-    <div class="weather__date-month">${month}</div>
-    <div class="weather__date-date">${date}</div>
-    <div class="weather__date-weekday">${day}</div>
-    `;
-};
+}; //   iconParent.innerHTML = `<img src="${icon}" alt="" class="weather__icon-content"></img>`;
+//   dateParent.innerHTML = `
+//     <div class="weather__date-month">${month}</div>
+//     <div class="weather__date-date">${date}</div>
+//     <div class="weather__date-weekday">${day}</div>
+//     `;
+// };
+//  <div class="row">
+//  <div class="weather">
+//    <div class="weather__data">
+//      <!-- weather data is here -->
+//     </div>
+//    <div class="weather__icon">
+//      <!-- icon is here -->
+//    </div>
+//    <div class="weather__date">
+//      <!-- date is here -->
+//    </div>
+//  </div>
+// </div>
+
 
 exports.displayData = displayData;
-},{"../date/date":"js/date/date.js"}],"js/bodyRow/bodyRow.js":[function(require,module,exports) {
+},{"../date/date":"js/date/date.js"}],"js/searchBar/searchBar.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -219,60 +284,35 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _apiConfig = _interopRequireDefault(require("../apiConfig/apiConfig"));
+var _apiFetchData = require("../apiFetchData/apiFetchData");
 
 var _debounce = _interopRequireDefault(require("../utils/debounce"));
 
-var _searchResult = require("./../components/searchResult");
+var _searchResult = require("../components/searchResult");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const bodyRow = () => {
-  const searchBar = () => {
-    const searchInput = document.querySelector(".search__input");
+const searchBar = () => {
+  const searchInput = document.querySelector(".search__input");
 
-    const onInput = async e => {
-      const searchResult = await fetchData(e.target.value);
-      (0, _searchResult.displayData)(searchResult);
-    };
-
-    searchInput.addEventListener("input", (0, _debounce.default)(onInput, 500));
+  const onInput = async e => {
+    const searchResult = await (0, _apiFetchData.fetchData)(e.target.value);
+    (0, _searchResult.displayData)(searchResult);
   };
 
-  const fetchData = async query => {
-    const {
-      api,
-      key,
-      units
-    } = _apiConfig.default;
-
-    try {
-      const res = await fetch(`${api}?q=${query}&units=${units}&appid=${key}`);
-
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      }
-
-      throw Error("City not found");
-    } catch (e) {
-      return null;
-    }
-  };
-
-  searchBar();
+  searchInput.addEventListener("input", (0, _debounce.default)(onInput, 500));
 };
 
-bodyRow();
-var _default = bodyRow;
+searchBar();
+var _default = searchBar;
 exports.default = _default;
-},{"../apiConfig/apiConfig":"js/apiConfig/apiConfig.js","../utils/debounce":"js/utils/debounce.js","./../components/searchResult":"js/components/searchResult.js"}],"index.js":[function(require,module,exports) {
+},{"../apiFetchData/apiFetchData":"js/apiFetchData/apiFetchData.js","../utils/debounce":"js/utils/debounce.js","../components/searchResult":"js/components/searchResult.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
-var _bodyRow = _interopRequireDefault(require("./js/bodyRow/bodyRow"));
+var _searchBar = _interopRequireDefault(require("./js/searchBar/searchBar"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./js/bodyRow/bodyRow":"js/bodyRow/bodyRow.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./js/searchBar/searchBar":"js/searchBar/searchBar.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -300,7 +340,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50208" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50810" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
