@@ -1,1 +1,1 @@
-import searchBar from "./js/searchBar/searchBar";
+import app from "./js/searchBar/searchBar";

@@ -238,6 +238,7 @@ const displayData = async (cityForecastData = null) => {
   const city = cityForecastData.name;
   const country = cityForecastData.sys.country;
   const icon = `http://openweathermap.org/img/w/${cityForecastData.weather[0].icon}.png`;
+  const wind = cityForecastData.wind.speed;
   root.innerHTML = `
   <div class="row">
     <div class="weather">
@@ -245,6 +246,7 @@ const displayData = async (cityForecastData = null) => {
         <div class="weather__data-temp">${temp}&deg;</div>
         <div class="weather__data-description">${weatherDescription}</div>
         <div class="weather__data-location">${city}, ${country}</div>
+        <div class="weather__data-wind">Wind: ${wind} mph</div>
       </div>
       <div class="weather__icon">
         <img src="${icon}" alt="" class="weather__icon-content"></img>
@@ -325,7 +327,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51068" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55902" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

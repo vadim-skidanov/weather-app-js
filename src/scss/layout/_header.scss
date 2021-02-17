@@ -5,4 +5,8 @@
   background: #bbf1fa;
   height: 5rem;
   font-size: 2rem;
+
+  @include respond(tab-land) {
+    height: 7rem;
+  }
 }

@@ -21,6 +21,11 @@ body {
   margin-left: 2rem;
   color: #ec4646;
 }
+@media only screen and (min-width: 75em) {
+  .logo {
+    font-size: 3.5rem;
+  }
+}
 
 .search ::-webkit-search-cancel-button {
   display: none;
@@ -37,6 +42,13 @@ body {
   font-size: 1.5rem;
   position: relative;
   transition: all 0.2s;
+}
+@media only screen and (min-width: 75em) {
+  .search__input {
+    width: 12.6rem;
+    height: 3.5rem;
+    font-size: 2.1rem;
+  }
 }
 .search__input:focus, .search__input:hover {
   outline: none;
@@ -58,6 +70,11 @@ body {
   color: #663f3f;
   cursor: pointer;
 }
+@media only screen and (min-width: 75em) {
+  .search__submit {
+    top: 2.6rem;
+  }
+}
 .search__submit:focus {
   outline: none;
 }
@@ -68,6 +85,11 @@ body {
   transform: translateY(30%);
   font-size: 2rem;
 }
+@media only screen and (min-width: 75em) {
+  .nothing {
+    font-size: 2.8rem;
+  }
+}
 
 .row {
   background: #bbf1fa;
@@ -76,24 +98,51 @@ body {
   border-radius: 5px;
   min-height: 5rem;
 }
+@media only screen and (min-width: 75em) {
+  .row {
+    max-width: 95%;
+    margin: 1rem auto;
+  }
+}
 
 .weather {
   display: flex;
   justify-content: space-between;
+  max-width: 70%;
+  margin: 0 auto;
 }
 .weather__data {
   text-transform: uppercase;
+  font-size: 1.5rem;
 }
 .weather__data-temp {
   font-size: 5rem;
   font-weight: 600;
   color: #663f3f;
 }
+@media only screen and (min-width: 75em) {
+  .weather__data-temp {
+    font-size: 7rem;
+  }
+}
+.weather__data-wind {
+  text-transform: initial;
+}
 .weather__data-description {
   color: red;
 }
+@media only screen and (min-width: 75em) {
+  .weather__data-description {
+    margin-bottom: 0.8rem;
+  }
+}
 .weather__icon-content {
   width: 10rem;
+}
+@media only screen and (min-width: 75em) {
+  .weather__icon-content {
+    width: 14rem;
+  }
 }
 .weather__date {
   display: flex;
@@ -103,6 +152,11 @@ body {
   font-size: 1.5rem;
   margin: 1rem 0;
 }
+@media only screen and (min-width: 75em) {
+  .weather__date {
+    font-size: 2.1rem;
+  }
+}
 .weather__date-month {
   text-transform: capitalize;
 }
@@ -111,6 +165,11 @@ body {
   font-size: 2.5rem;
   color: #663f3f;
   font-weight: 600;
+}
+@media only screen and (min-width: 75em) {
+  .weather__date-date {
+    font-size: 3.5rem;
+  }
 }
 .weather__date-weekday {
   text-transform: capitalize;
@@ -123,6 +182,11 @@ body {
   background: #bbf1fa;
   height: 5rem;
   font-size: 2rem;
+}
+@media only screen and (min-width: 75em) {
+  .header {
+    height: 7rem;
+  }
 }
 
 /*# sourceMappingURL=/main.77bb5cfd.css.map */
