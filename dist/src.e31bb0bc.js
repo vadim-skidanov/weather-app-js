@@ -214,13 +214,17 @@ var _date = _interopRequireDefault(require("../date/date"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const displayData = async cityForecastData => {
-  const tempParent = document.querySelector(".content");
+const renderEmptyList = el => {
+  el.innerHTML = `
+  <div class="nothing">Search for a city</div>
+`;
+};
+
+const displayData = async (cityForecastData = null) => {
+  const root = document.querySelector(".content");
 
   if (cityForecastData === null) {
-    tempParent.innerHTML = `
-      <div class="nothing">Search for a city</div>
-    `;
+    renderEmptyList(root);
     return;
   }
 
@@ -234,7 +238,7 @@ const displayData = async cityForecastData => {
   const city = cityForecastData.name;
   const country = cityForecastData.sys.country;
   const icon = `http://openweathermap.org/img/w/${cityForecastData.weather[0].icon}.png`;
-  tempParent.innerHTML = `
+  root.innerHTML = `
   <div class="row">
     <div class="weather">
       <div class="weather__data">
@@ -253,27 +257,7 @@ const displayData = async cityForecastData => {
     </div>
   </div>
   `;
-}; //   iconParent.innerHTML = `<img src="${icon}" alt="" class="weather__icon-content"></img>`;
-//   dateParent.innerHTML = `
-//     <div class="weather__date-month">${month}</div>
-//     <div class="weather__date-date">${date}</div>
-//     <div class="weather__date-weekday">${day}</div>
-//     `;
-// };
-//  <div class="row">
-//  <div class="weather">
-//    <div class="weather__data">
-//      <!-- weather data is here -->
-//     </div>
-//    <div class="weather__icon">
-//      <!-- icon is here -->
-//    </div>
-//    <div class="weather__date">
-//      <!-- date is here -->
-//    </div>
-//  </div>
-// </div>
-
+};
 
 exports.displayData = displayData;
 },{"../date/date":"js/date/date.js"}],"js/searchBar/searchBar.js":[function(require,module,exports) {
@@ -303,6 +287,7 @@ const searchBar = () => {
   searchInput.addEventListener("input", (0, _debounce.default)(onInput, 500));
 };
 
+(0, _searchResult.displayData)();
 searchBar();
 var _default = searchBar;
 exports.default = _default;
@@ -340,7 +325,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50810" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51068" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

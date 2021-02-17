@@ -1,12 +1,16 @@
 import dateConfig from "../date/date";
 
-export const displayData = async (cityForecastData) => {
-  const tempParent = document.querySelector(".content");
+const renderEmptyList = (el) => {
+  el.innerHTML = `
+  <div class="nothing">Search for a city</div>
+`;
+};
+
+export const displayData = async (cityForecastData = null) => {
+  const root = document.querySelector(".content");
 
   if (cityForecastData === null) {
-    tempParent.innerHTML = `
-      <div class="nothing">Search for a city</div>
-    `;
+    renderEmptyList(root);
     return;
   }
 
@@ -18,7 +22,7 @@ export const displayData = async (cityForecastData) => {
   const country = cityForecastData.sys.country;
   const icon = `http://openweathermap.org/img/w/${cityForecastData.weather[0].icon}.png`;
 
-  tempParent.innerHTML = `
+  root.innerHTML = `
   <div class="row">
     <div class="weather">
       <div class="weather__data">
@@ -38,25 +42,3 @@ export const displayData = async (cityForecastData) => {
   </div>
   `;
 };
-//   iconParent.innerHTML = `<img src="${icon}" alt="" class="weather__icon-content"></img>`;
-
-//   dateParent.innerHTML = `
-//     <div class="weather__date-month">${month}</div>
-//     <div class="weather__date-date">${date}</div>
-//     <div class="weather__date-weekday">${day}</div>
-//     `;
-// };
-
-//  <div class="row">
-//  <div class="weather">
-//    <div class="weather__data">
-//      <!-- weather data is here -->
-//     </div>
-//    <div class="weather__icon">
-//      <!-- icon is here -->
-//    </div>
-//    <div class="weather__date">
-//      <!-- date is here -->
-//    </div>
-//  </div>
-// </div>

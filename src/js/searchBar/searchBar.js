@@ -11,6 +11,7 @@ const searchBar = () => {
   searchInput.addEventListener("input", debounce(onInput, 500));
 };
 
+displayData();
 searchBar();
 
 export default searchBar;
